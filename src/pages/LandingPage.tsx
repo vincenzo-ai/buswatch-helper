@@ -1,8 +1,10 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Motion } from '@/components/AnimatePresence';
 import Logo from '@/components/Logo';
-import { Bus, UserCircle, CheckCircle, ArrowRight, MapPin } from 'lucide-react';
+import AuthDialog from '@/components/AuthDialog';
+import { Bus, UserCircle, CheckCircle, ArrowRight, MapPin, LogIn, UserPlus } from 'lucide-react';
 
 const FEATURES = [
   {
@@ -30,25 +32,41 @@ const STEPS = [
 ];
 
 const LandingPage = () => {
-  const [activeSection, setActiveSection] = useState<'parent' | 'driver'>('parent');
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [authType, setAuthType] = useState<'driver' | 'parent'>('parent');
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+
+  const openLogin = (type: 'driver' | 'parent') => {
+    setAuthType(type);
+    setAuthMode('login');
+    setIsAuthOpen(true);
+  };
+
+  const openRegister = (type: 'driver' | 'parent') => {
+    setAuthType(type);
+    setAuthMode('register');
+    setIsAuthOpen(true);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-secondary/30">
       <header className="p-4 md:p-6 flex items-center justify-between">
         <Logo />
         <div className="flex gap-2">
-          <Link 
-            to="/parent" 
-            className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+          <button 
+            onClick={() => openLogin('parent')}
+            className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
           >
+            <LogIn className="h-4 w-4" />
             Accesso Genitori
-          </Link>
-          <Link 
-            to="/driver" 
-            className="px-4 py-2 text-sm font-medium bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 transition-colors"
+          </button>
+          <button 
+            onClick={() => openLogin('driver')}
+            className="px-4 py-2 text-sm font-medium bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 transition-colors flex items-center gap-2"
           >
+            <LogIn className="h-4 w-4" />
             Accesso Autisti
-          </Link>
+          </button>
         </div>
       </header>
 
@@ -78,12 +96,20 @@ const LandingPage = () => {
                   <p className="text-white/90 mb-4">
                     Segui in tempo reale il percorso del bus e ricevi notifiche quando sta per arrivare.
                   </p>
-                  <Link 
-                    to="/parent"
-                    className="flex items-center gap-2 w-fit px-4 py-2 bg-white rounded-lg text-sm font-medium hover:bg-white/90 transition-colors"
-                  >
-                    Accedi come Genitore <ArrowRight size={16} />
-                  </Link>
+                  <div className="flex flex-wrap gap-2">
+                    <button 
+                      onClick={() => openLogin('parent')}
+                      className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg text-sm font-medium hover:bg-white/90 transition-colors"
+                    >
+                      <LogIn className="h-4 w-4" /> Accedi
+                    </button>
+                    <button 
+                      onClick={() => openRegister('parent')}
+                      className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+                    >
+                      <UserPlus className="h-4 w-4" /> Registrati
+                    </button>
+                  </div>
                 </div>
               </div>
             </Motion>
@@ -100,12 +126,20 @@ const LandingPage = () => {
                   <p className="text-white/90 mb-4">
                     Condividi la tua posizione e tieni i genitori informati sul tuo percorso.
                   </p>
-                  <Link 
-                    to="/driver"
-                    className="flex items-center gap-2 w-fit px-4 py-2 bg-white rounded-lg text-sm font-medium hover:bg-white/90 transition-colors"
-                  >
-                    Accedi come Autista <ArrowRight size={16} />
-                  </Link>
+                  <div className="flex flex-wrap gap-2">
+                    <button 
+                      onClick={() => openLogin('driver')}
+                      className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg text-sm font-medium hover:bg-white/90 transition-colors"
+                    >
+                      <LogIn className="h-4 w-4" /> Accedi
+                    </button>
+                    <button 
+                      onClick={() => openRegister('driver')}
+                      className="flex items-center gap-2 px-4 py-2 bg-secondary text-white rounded-lg text-sm font-medium hover:bg-secondary/90 transition-colors"
+                    >
+                      <UserPlus className="h-4 w-4" /> Registrati
+                    </button>
+                  </div>
                 </div>
               </div>
             </Motion>
@@ -124,7 +158,9 @@ const LandingPage = () => {
                 <Motion 
                   key={index} 
                   className="animate-fade-in" 
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.1 }}
                 >
                   <div className="border border-border rounded-xl p-6 hover:border-primary/40 hover:bg-primary/5 transition-colors">
                     <div className="p-3 rounded-full bg-primary/10 w-fit mb-4">
@@ -153,7 +189,9 @@ const LandingPage = () => {
                 <Motion 
                   key={index} 
                   className="mb-8 last:mb-0 animate-fade-in" 
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.1 }}
                 >
                   <div className="absolute left-0 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                     <div className="w-4 h-4 rounded-full bg-primary"></div>
@@ -174,18 +212,20 @@ const LandingPage = () => {
                 Scegli se accedere come genitore o come autista e inizia subito a utilizzare BusTracker.
               </p>
               <div className="flex flex-col md:flex-row gap-4 justify-center">
-                <Link
-                  to="/parent"
-                  className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
+                <button
+                  onClick={() => openRegister('parent')}
+                  className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
                 >
-                  Accedi come Genitore
-                </Link>
-                <Link
-                  to="/driver"
-                  className="px-6 py-3 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/80 transition-colors"
+                  <UserPlus className="h-5 w-5" />
+                  Registrati come Genitore
+                </button>
+                <button
+                  onClick={() => openRegister('driver')}
+                  className="px-6 py-3 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/80 transition-colors flex items-center justify-center gap-2"
                 >
-                  Accedi come Autista
-                </Link>
+                  <UserPlus className="h-5 w-5" />
+                  Registrati come Autista
+                </button>
               </div>
             </div>
           </Motion>
@@ -211,6 +251,13 @@ const LandingPage = () => {
           </div>
         </div>
       </footer>
+      
+      <AuthDialog 
+        isOpen={isAuthOpen} 
+        onOpenChange={setIsAuthOpen} 
+        initialUserType={authType}
+        initialMode={authMode}
+      />
     </div>
   );
 };
