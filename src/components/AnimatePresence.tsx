@@ -99,6 +99,7 @@ export const AnimatePresence: React.FC<AnimatePresenceProps> = ({
 export type MotionProps = {
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   initial?: { [key: string]: string | number };
   animate?: { [key: string]: string | number };
   exit?: { [key: string]: string | number };
@@ -108,13 +109,14 @@ export type MotionProps = {
 export const Motion: React.FC<MotionProps> = ({
   children,
   className,
+  style,
   initial,
   animate,
   exit,
   transition,
 }) => {
   return (
-    <div className={cn("transition-all duration-300 ease-in-out", className)}>
+    <div className={cn("transition-all duration-300 ease-in-out", className)} style={style}>
       {children}
     </div>
   );

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Motion } from '@/components/AnimatePresence';
@@ -122,7 +121,11 @@ const LandingPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {FEATURES.map((feature, index) => (
-                <Motion key={index} className="animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
+                <Motion 
+                  key={index} 
+                  className="animate-fade-in" 
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
                   <div className="border border-border rounded-xl p-6 hover:border-primary/40 hover:bg-primary/5 transition-colors">
                     <div className="p-3 rounded-full bg-primary/10 w-fit mb-4">
                       {feature.icon}
@@ -147,7 +150,11 @@ const LandingPage = () => {
 
             <div className="max-w-2xl mx-auto relative border-l-2 border-primary/30 ml-4 md:ml-8 pl-8 py-4">
               {STEPS.map((step, index) => (
-                <Motion key={index} className="mb-8 last:mb-0 animate-fade-in">
+                <Motion 
+                  key={index} 
+                  className="mb-8 last:mb-0 animate-fade-in" 
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
                   <div className="absolute left-0 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                     <div className="w-4 h-4 rounded-full bg-primary"></div>
                   </div>
