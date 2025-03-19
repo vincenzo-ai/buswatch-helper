@@ -9,6 +9,8 @@ import LandingPage from "./pages/LandingPage";
 import DriverApp from "./pages/DriverApp";
 import ParentApp from "./pages/ParentApp";
 import NotFound from "./pages/NotFound";
+import DriverProfile from "./pages/DriverProfile";
+import ChildProfile from "./pages/ChildProfile";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +23,8 @@ const AppRoutes = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/driver" element={<DriverApp />} />
         <Route path="/parent" element={<ParentApp />} />
+        <Route path="/driver-profile" element={<DriverProfile />} />
+        <Route path="/child-profile" element={<ChildProfile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>

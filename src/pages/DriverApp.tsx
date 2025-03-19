@@ -4,20 +4,20 @@ import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Motion } from '@/components/AnimatePresence';
 import Logo from '@/components/Logo';
-import BusMap from '@/components/BusMap';
+import GoogleMap from '@/components/GoogleMap';
 import GlassCard from '@/components/GlassCard';
 import StatusBadge from '@/components/StatusBadge';
-import { ArrowLeft, Bus, RadioTower, Battery, SignalHigh, User, MapPin, Clock } from 'lucide-react';
+import { ArrowLeft, Bus, RadioTower, Battery, SignalHigh, User, MapPin, Clock, UserPlus } from 'lucide-react';
 
 type RouteStatus = 'idle' | 'active' | 'completed';
 
 const ROUTE_INFO = {
-  name: "Morning Route - Lincoln Elementary",
+  name: "Percorso Mattutino - Scuola Elementare Lincoln",
   stops: [
-    { name: "Parkside Neighborhood", time: "7:30 AM", completed: false },
-    { name: "Hillcrest Avenue", time: "7:40 AM", completed: false },
-    { name: "Oakwood Lane", time: "7:50 AM", completed: false },
-    { name: "Lincoln Elementary School", time: "8:10 AM", completed: false },
+    { name: "Quartiere Parkside", time: "7:30", completed: false },
+    { name: "Viale Hillcrest", time: "7:40", completed: false },
+    { name: "Via Oakwood", time: "7:50", completed: false },
+    { name: "Scuola Elementare Lincoln", time: "8:10", completed: false },
   ]
 };
 
@@ -31,7 +31,7 @@ const DriverApp = () => {
     Array(ROUTE_INFO.stops.length).fill(false)
   );
 
-  // Simulate battery drain
+  // Simula consumo batteria
   useEffect(() => {
     if (isSharingLocation) {
       const interval = setInterval(() => {
@@ -41,10 +41,10 @@ const DriverApp = () => {
     }
   }, [isSharingLocation]);
 
-  // Simulate signal fluctuation
+  // Simula fluttuazione segnale
   useEffect(() => {
     const interval = setInterval(() => {
-      setSignal(Math.floor(Math.random() * 2) + 3); // 3 or 4 bars
+      setSignal(Math.floor(Math.random() * 2) + 3); // 3 o 4 barre
     }, 15000);
     return () => clearInterval(interval);
   }, []);
@@ -68,11 +68,11 @@ const DriverApp = () => {
       newStopProgress[index] = true;
       setStopProgress(newStopProgress);
       
-      // If there are more stops, move to the next one
+      // Se ci sono altre fermate, passa alla successiva
       if (index < ROUTE_INFO.stops.length - 1) {
         setCurrentStopIndex(index + 1);
       } else {
-        // Route completed
+        // Percorso completato
         setRouteStatus('completed');
       }
     }
@@ -83,7 +83,7 @@ const DriverApp = () => {
       <header className="p-4 flex items-center justify-between border-b border-border">
         <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft size={18} />
-          <span className="text-sm font-medium">Back</span>
+          <span className="text-sm font-medium">Indietro</span>
         </Link>
         <Logo size="sm" />
         <div className="flex items-center gap-2">
@@ -106,11 +106,19 @@ const DriverApp = () => {
                 <User size={20} className="text-primary" />
               </div>
               <div>
-                <h2 className="font-medium">John Driver</h2>
+                <h2 className="font-medium">Giovanni Autista</h2>
                 <p className="text-sm text-muted-foreground">Bus #42</p>
               </div>
             </div>
-            <StatusBadge status={routeStatus} />
+            <div className="flex items-center gap-2">
+              <StatusBadge status={routeStatus} />
+              <Link 
+                to="/driver-profile" 
+                className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+              >
+                <UserPlus size={18} />
+              </Link>
+            </div>
           </GlassCard>
         </Motion>
 
@@ -120,12 +128,12 @@ const DriverApp = () => {
               <GlassCard>
                 <div className="flex items-center gap-3 mb-4">
                   <Bus size={20} className="text-primary" />
-                  <h2 className="font-medium">Route Details</h2>
+                  <h2 className="font-medium">Dettagli Percorso</h2>
                 </div>
                 <div className="mb-4">
                   <h3 className="font-medium">{ROUTE_INFO.name}</h3>
                   <p className="text-sm text-muted-foreground">
-                    {ROUTE_INFO.stops.length} stops · Approx. 40 min
+                    {ROUTE_INFO.stops.length} fermate · Circa 40 min
                   </p>
                 </div>
                 <div className="space-y-4">
@@ -165,12 +173,12 @@ const DriverApp = () => {
                           onClick={() => markStopAsCompleted(index)}
                           className="text-sm px-3 py-1 rounded-full bg-primary text-white font-medium hover:bg-primary/90 transition-colors"
                         >
-                          Mark Complete
+                          Completa
                         </button>
                       )}
                       {stopProgress[index] && (
                         <span className="text-sm px-3 py-1 rounded-full bg-green-100 text-green-700 font-medium">
-                          Completed
+                          Completato
                         </span>
                       )}
                     </div>
@@ -182,19 +190,19 @@ const DriverApp = () => {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <RadioTower size={20} className={isSharingLocation ? "text-primary animate-pulse" : "text-muted-foreground"} />
-                    <h3 className="font-medium">Location Sharing</h3>
+                    <h3 className="font-medium">Condivisione Posizione</h3>
                   </div>
                   <span className={cn(
                     "text-xs font-medium px-2 py-0.5 rounded-full",
                     isSharingLocation ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"
                   )}>
-                    {isSharingLocation ? "Active" : "Inactive"}
+                    {isSharingLocation ? "Attiva" : "Inattiva"}
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground mb-4">
                   {isSharingLocation 
-                    ? "Your location is being shared with parents in real-time." 
-                    : "Activate location sharing to allow parents to track the bus."
+                    ? "La tua posizione è condivisa con i genitori in tempo reale." 
+                    : "Attiva la condivisione della posizione per consentire ai genitori di monitorare il bus."
                   }
                 </p>
                 <button
@@ -206,14 +214,14 @@ const DriverApp = () => {
                       : "bg-primary text-white hover:bg-primary/90"
                   )}
                 >
-                  {isSharingLocation ? "Stop Sharing Location" : "Start Sharing Location"}
+                  {isSharingLocation ? "Interrompi Condivisione" : "Inizia Condivisione"}
                 </button>
               </GlassCard>
             </div>
           </Motion>
 
           <Motion className="animate-fade-in delay-75 order-1 md:order-2 aspect-square md:aspect-auto h-[300px] md:h-auto">
-            <BusMap isDriver={true} />
+            <GoogleMap isDriver={true} />
           </Motion>
         </div>
       </main>
