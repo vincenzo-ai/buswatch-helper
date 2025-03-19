@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Motion } from '@/components/AnimatePresence';
 import Logo from '@/components/Logo';
-import GoogleMap from '@/components/GoogleMap';
+import MapboxMap from '@/components/MapboxMap';
 import GlassCard from '@/components/GlassCard';
 import StatusBadge from '@/components/StatusBadge';
 import { 
@@ -235,7 +235,7 @@ const ParentApp = () => {
           </Motion>
 
           <Motion className="animate-scale-in order-1 md:order-2 aspect-square md:aspect-auto h-[300px] md:h-auto">
-            <GoogleMap>
+            <MapboxMap>
               <GlassCard className="animate-slide-up" padding="sm">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -248,7 +248,7 @@ const ParentApp = () => {
                   <StatusBadge status={timeRemaining > 0 ? "active" : "completed"} size="sm" />
                 </div>
               </GlassCard>
-            </GoogleMap>
+            </MapboxMap>
           </Motion>
         </div>
       </main>

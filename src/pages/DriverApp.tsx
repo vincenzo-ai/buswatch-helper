@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { Motion } from '@/components/AnimatePresence';
-import GoogleMap from '@/components/GoogleMap';
+import MapboxMap from '@/components/MapboxMap';
 import DriverHeader from '@/components/driver/DriverHeader';
 import DriverProfileSummary from '@/components/driver/DriverProfileSummary';
 import RouteDetails from '@/components/driver/RouteDetails';
@@ -98,7 +97,7 @@ const DriverApp = () => {
           </Motion>
 
           <Motion className="animate-fade-in delay-75 order-1 md:order-2 aspect-square md:aspect-auto h-[300px] md:h-auto">
-            <GoogleMap isDriver={true} />
+            <MapboxMap isDriver={true} />
           </Motion>
         </div>
       </main>
