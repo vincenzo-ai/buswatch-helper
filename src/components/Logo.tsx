@@ -60,7 +60,7 @@ const Logo = ({ className, size = "md", variant = "primary" }: LogoProps) => {
           />
         </svg>
       </div>
-      <span className="font-semibold tracking-tight">BusWatch</span>
+      <span className="font-semibold tracking-tight">Ti Accompagno</span>
     </div>
   );
 };

@@ -15,6 +15,7 @@ import ChildProfile from "./pages/ChildProfile";
 import TermsOfService from "./pages/TermsOfService";
 import Privacy from "./pages/Privacy";
 import Contatti from "./pages/Contatti";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const AppRoutes = () => {
         <Route path="/termini-di-servizio" element={<TermsOfService />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/contatti" element={<Contatti />} />
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>

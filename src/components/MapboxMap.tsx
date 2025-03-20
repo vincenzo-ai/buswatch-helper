@@ -33,7 +33,7 @@ const MapboxMap = ({
 
   // Inizializza la mappa quando il componente viene montato
   useEffect(() => {
-    if (!mapContainer.current) return;
+    if (!mapContainer.current || map.current) return;
 
     // Crea una nuova istanza di mappa Leaflet
     const newMap = L.map(mapContainer.current).setView(
@@ -46,28 +46,29 @@ const MapboxMap = ({
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(newMap);
 
-    // Imposta la mappa quando è caricata
-    map.current = newMap;
-    setMapLoaded(true);
+    // Crea icone personalizzate per i marker
+    const busIcon = L.divIcon({
+      className: 'bus-marker',
+      html: `<div class="w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-300"></div>`,
+      iconSize: [16, 16],
+      iconAnchor: [8, 8]
+    });
+
+    const destIcon = L.divIcon({
+      className: 'destination-marker',
+      html: `<div class="w-4 h-4 rounded-full bg-red-500 ring-4 ring-red-300"></div>`,
+      iconSize: [16, 16],
+      iconAnchor: [8, 8]
+    });
 
     // Aggiungi marker per il bus
     busMarker.current = L.marker([busLocation.lat, busLocation.lng], {
-      icon: L.divIcon({
-        className: 'bus-marker',
-        html: `<div class="w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-300"></div>`,
-        iconSize: [16, 16],
-        iconAnchor: [8, 8]
-      })
+      icon: busIcon
     }).addTo(newMap);
 
     // Aggiungi marker per la destinazione
     destMarker.current = L.marker([destinationLocation.lat, destinationLocation.lng], {
-      icon: L.divIcon({
-        className: 'destination-marker',
-        html: `<div class="w-4 h-4 rounded-full bg-red-500 ring-4 ring-red-300"></div>`,
-        iconSize: [16, 16],
-        iconAnchor: [8, 8]
-      })
+      icon: destIcon
     }).addTo(newMap);
 
     // Adatta la vista per visualizzare entrambi i marker
@@ -80,10 +81,15 @@ const MapboxMap = ({
       padding: [50, 50]
     });
 
+    // Imposta la mappa e aggiorna lo stato
+    map.current = newMap;
+    setMapLoaded(true);
+
     // Pulizia al momento dello smontaggio
     return () => {
       if (map.current) {
         map.current.remove();
+        map.current = null;
       }
     };
   }, []);
@@ -119,25 +125,19 @@ const MapboxMap = ({
       className
     )}>
       <div className="w-full h-full">
-        {!mapLoaded ? (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="animate-pulse w-8 h-8 rounded-full bg-primary/20"></div>
-          </div>
-        ) : (
-          <div className="w-full h-full relative">
-            <div ref={mapContainer} className="absolute inset-0" />
-            
-            {/* Overlay mappa */}
-            <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-background/10 to-transparent"></div>
-            
-            {/* Contenuto child */}
-            {children && (
-              <div className="absolute inset-x-0 bottom-0 p-4">
-                {children}
-              </div>
-            )}
-          </div>
-        )}
+        <div className="w-full h-full relative">
+          <div ref={mapContainer} className="absolute inset-0" />
+          
+          {/* Overlay mappa */}
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-background/10 to-transparent"></div>
+          
+          {/* Contenuto child */}
+          {children && (
+            <div className="absolute inset-x-0 bottom-0 p-4 z-10">
+              {children}
+            </div>
+          )}
+        </div>
       </div>
     </Motion>
   );

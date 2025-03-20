@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Motion } from '@/components/AnimatePresence';
 import Logo from '@/components/Logo';
 import AuthDialog from '@/components/AuthDialog';
-import { Bus, UserCircle, CheckCircle, MapPin, LogIn, Key } from 'lucide-react';
+import { Bus, UserCircle, CheckCircle, MapPin, LogIn, Key, ShieldAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { driverDemoAccount, parentDemoAccount } from '@/lib/demoAccounts';
 import { useToast } from '@/hooks/use-toast';
@@ -86,7 +85,7 @@ const LandingPage = () => {
         <section className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
             <Motion className="inline-block" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">BusTracker Italia</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">Ti Accompagno</h1>
             </Motion>
             <Motion className="inline-block" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -270,6 +269,10 @@ const LandingPage = () => {
             </Link>
             <Link to="/contatti" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Contatti
+            </Link>
+            <Link to="/admin" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+              <ShieldAlert size={14} />
+              Admin
             </Link>
           </div>
         </div>
