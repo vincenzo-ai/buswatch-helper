@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Motion } from '@/components/AnimatePresence';
 import { ArrowLeft } from 'lucide-react';
 import Logo from '@/components/Logo';
+import Footer from '@/components/Footer';
 
 const NotFound = () => (
   <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-secondary/30">
@@ -30,6 +31,8 @@ const NotFound = () => (
         </Link>
       </Motion>
     </main>
+
+    <Footer />
   </div>
 );
 

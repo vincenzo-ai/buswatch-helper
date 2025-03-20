@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { driverDemoAccount, parentDemoAccount } from '@/lib/demoAccounts';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import Footer from '@/components/Footer';
 
 const FEATURES = [
   {
@@ -276,6 +277,7 @@ const LandingPage = () => {
             </Link>
           </div>
         </div>
+        <Footer className="mt-4" />
       </footer>
       
       <AuthDialog 

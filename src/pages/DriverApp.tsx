@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Motion } from '@/components/AnimatePresence';
 import MapboxMap from '@/components/MapboxMap';
@@ -8,6 +7,7 @@ import RouteDetails from '@/components/driver/RouteDetails';
 import LocationSharing from '@/components/driver/LocationSharing';
 import { ROUTE_INFO } from '@/constants/routeData';
 import { RouteStatus } from '@/lib/driver-types';
+import Footer from '@/components/Footer';
 
 const DriverApp = () => {
   const [routeStatus, setRouteStatus] = useState<RouteStatus>('idle');
@@ -102,6 +102,8 @@ const DriverApp = () => {
           </Motion>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { Motion } from '@/components/AnimatePresence';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import Logo from '@/components/Logo';
+import Footer from '@/components/Footer';
 
 const TermsOfService = () => {
   return (
@@ -84,6 +85,8 @@ const TermsOfService = () => {
           </div>
         </Motion>
       </main>
+
+      <Footer />
     </div>
   );
 };

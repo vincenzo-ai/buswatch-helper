@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -10,6 +9,7 @@ import TimerCard from '@/components/TimerCard';
 import MapLocationCard from '@/components/MapLocationCard';
 import { ArrowLeft, Users, Bell, Phone, ChevronRight, Bus, UserPlus, MapPin } from 'lucide-react';
 import { toast } from "sonner";
+import Footer from '@/components/Footer';
 
 const CHILDREN = [
   { id: 1, name: "Emma", grade: "3ª Elementare", stop: "Quartiere Parkside", time: "7:35" },
@@ -201,6 +201,8 @@ const ParentApp = () => {
           </Motion>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 };
