@@ -1,9 +1,10 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Motion } from '@/components/AnimatePresence';
 import Logo from '@/components/Logo';
 import AuthDialog from '@/components/AuthDialog';
-import { Bus, UserCircle, CheckCircle, ArrowRight, MapPin, LogIn, UserPlus, Key } from 'lucide-react';
+import { Bus, UserCircle, CheckCircle, MapPin, LogIn, Key } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { driverDemoAccount, parentDemoAccount } from '@/lib/demoAccounts';
 import { useToast } from '@/hooks/use-toast';
@@ -41,15 +42,9 @@ const LandingPage = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const openLogin = (type: 'driver' | 'parent') => {
+  const openAuth = (type: 'driver' | 'parent', mode: 'login' | 'register') => {
     setAuthType(type);
-    setAuthMode('login');
-    setIsAuthOpen(true);
-  };
-
-  const openRegister = (type: 'driver' | 'parent') => {
-    setAuthType(type);
-    setAuthMode('register');
+    setAuthMode(mode);
     setIsAuthOpen(true);
   };
 
@@ -71,18 +66,18 @@ const LandingPage = () => {
         <Logo />
         <div className="flex gap-2">
           <button 
-            onClick={() => openLogin('parent')}
+            onClick={() => openAuth('parent', 'login')}
             className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
           >
             <LogIn className="h-4 w-4" />
-            Accesso Genitori
+            Area Genitori
           </button>
           <button 
-            onClick={() => openLogin('driver')}
+            onClick={() => openAuth('driver', 'login')}
             className="px-4 py-2 text-sm font-medium bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 transition-colors flex items-center gap-2"
           >
             <LogIn className="h-4 w-4" />
-            Accesso Autisti
+            Area Autisti
           </button>
         </div>
       </header>
@@ -141,16 +136,10 @@ const LandingPage = () => {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <button 
-                      onClick={() => openLogin('parent')}
-                      className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg text-sm font-medium hover:bg-white/90 transition-colors"
+                      onClick={() => openAuth('parent', 'login')}
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-lg text-sm font-medium hover:bg-white/90 transition-colors"
                     >
-                      <LogIn className="h-4 w-4" /> Accedi
-                    </button>
-                    <button 
-                      onClick={() => openRegister('parent')}
-                      className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-                    >
-                      <UserPlus className="h-4 w-4" /> Registrati
+                      Accedi / Registrati
                     </button>
                   </div>
                 </div>
@@ -171,16 +160,10 @@ const LandingPage = () => {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <button 
-                      onClick={() => openLogin('driver')}
-                      className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg text-sm font-medium hover:bg-white/90 transition-colors"
+                      onClick={() => openAuth('driver', 'login')}
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-lg text-sm font-medium hover:bg-white/90 transition-colors"
                     >
-                      <LogIn className="h-4 w-4" /> Accedi
-                    </button>
-                    <button 
-                      onClick={() => openRegister('driver')}
-                      className="flex items-center gap-2 px-4 py-2 bg-secondary text-white rounded-lg text-sm font-medium hover:bg-secondary/90 transition-colors"
-                    >
-                      <UserPlus className="h-4 w-4" /> Registrati
+                      Accedi / Registrati
                     </button>
                   </div>
                 </div>
@@ -256,18 +239,16 @@ const LandingPage = () => {
               </p>
               <div className="flex flex-col md:flex-row gap-4 justify-center">
                 <button
-                  onClick={() => openRegister('parent')}
+                  onClick={() => openAuth('parent', 'register')}
                   className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
                 >
-                  <UserPlus className="h-5 w-5" />
-                  Registrati come Genitore
+                  Inizia come Genitore
                 </button>
                 <button
-                  onClick={() => openRegister('driver')}
+                  onClick={() => openAuth('driver', 'register')}
                   className="px-6 py-3 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/80 transition-colors flex items-center justify-center gap-2"
                 >
-                  <UserPlus className="h-5 w-5" />
-                  Registrati come Autista
+                  Inizia come Autista
                 </button>
               </div>
             </div>
@@ -281,15 +262,15 @@ const LandingPage = () => {
             <Logo size="sm" />
           </div>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/termini-di-servizio" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Termini di Servizio
-            </a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            </Link>
+            <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Privacy
-            </a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            </Link>
+            <Link to="/contatti" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Contatti
-            </a>
+            </Link>
           </div>
         </div>
       </footer>

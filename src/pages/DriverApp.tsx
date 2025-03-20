@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Motion } from '@/components/AnimatePresence';
 import MapboxMap from '@/components/MapboxMap';

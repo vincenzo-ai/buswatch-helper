@@ -5,13 +5,16 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "@/components/AnimatePresence";
-import OpenStreetMapNotice from "@/components/MapboxApiKey";
+import OpenStreetMapNotice from "@/components/OpenStreetMapNotice";
 import LandingPage from "./pages/LandingPage";
 import DriverApp from "./pages/DriverApp";
 import ParentApp from "./pages/ParentApp";
 import NotFound from "./pages/NotFound";
 import DriverProfile from "./pages/DriverProfile";
 import ChildProfile from "./pages/ChildProfile";
+import TermsOfService from "./pages/TermsOfService";
+import Privacy from "./pages/Privacy";
+import Contatti from "./pages/Contatti";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +29,9 @@ const AppRoutes = () => {
         <Route path="/parent" element={<ParentApp />} />
         <Route path="/driver-profile" element={<DriverProfile />} />
         <Route path="/child-profile" element={<ChildProfile />} />
+        <Route path="/termini-di-servizio" element={<TermsOfService />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/contatti" element={<Contatti />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>

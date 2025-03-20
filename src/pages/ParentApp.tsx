@@ -6,11 +6,9 @@ import { Motion } from '@/components/AnimatePresence';
 import Logo from '@/components/Logo';
 import MapboxMap from '@/components/MapboxMap';
 import GlassCard from '@/components/GlassCard';
-import StatusBadge from '@/components/StatusBadge';
-import { 
-  ArrowLeft, Users, Clock, Bell, MapPin, Phone, 
-  ChevronRight, Bus, Navigation2, School, UserPlus
-} from 'lucide-react';
+import TimerCard from '@/components/TimerCard';
+import MapLocationCard from '@/components/MapLocationCard';
+import { ArrowLeft, Users, Bell, Phone, ChevronRight, Bus, UserPlus, MapPin } from 'lucide-react';
 import { toast } from "sonner";
 
 const CHILDREN = [
@@ -35,7 +33,6 @@ const ParentApp = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState<number>(12); // in minuti
   const [busActive, setBusActive] = useState(true);
-  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     // Simula movimento del bus diminuendo il tempo rimanente
@@ -75,14 +72,6 @@ const ParentApp = () => {
         ? "Non riceverai più notifiche relative al bus." 
         : "Riceverai notifiche sull'arrivo del bus.",
     });
-  };
-
-  const formatTimeRemaining = (minutes: number) => {
-    if (minutes <= 0) return "Arrivato";
-    if (minutes < 60) return `${minutes} min`;
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours}h ${mins}m`;
   };
 
   return (
@@ -133,47 +122,13 @@ const ParentApp = () => {
         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
           <Motion className="animate-slide-up order-2 md:order-1">
             <div className="flex flex-col gap-6 h-full">
-              {/* Informazioni ETA */}
-              <GlassCard>
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Clock size={20} className={busActive ? "text-primary animate-pulse" : "text-muted-foreground"} />
-                    <h3 className="font-medium">Arrivo Stimato</h3>
-                  </div>
-                  <StatusBadge status={timeRemaining > 0 ? "active" : "completed"} size="sm" />
-                </div>
-                
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-start">
-                    <span className="text-3xl font-bold mr-1">{formatTimeRemaining(timeRemaining)}</span>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium">{ROUTE_INFO.nextStop}</p>
-                    <p className="text-xs text-muted-foreground">Prossima fermata</p>
-                  </div>
-                </div>
-
-                <div className="relative h-2 bg-gray-100 rounded-full mb-4">
-                  <div 
-                    className={cn(
-                      "absolute h-full left-0 top-0 rounded-full transition-all duration-1000",
-                      busActive ? "bg-primary" : "bg-green-500",
-                    )}
-                    style={{ width: `${100 - (timeRemaining / 12 * 100)}%` }}
-                  ></div>
-                </div>
-
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Bus size={14} />
-                    <span>Posizione attuale</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <School size={14} />
-                    <span>{ROUTE_INFO.finalStop}</span>
-                  </div>
-                </div>
-              </GlassCard>
+              {/* Timer Card */}
+              <TimerCard
+                timeRemaining={timeRemaining}
+                nextStop={ROUTE_INFO.nextStop}
+                finalStop={ROUTE_INFO.finalStop}
+                isActive={busActive}
+              />
 
               {/* Informazioni Bambini */}
               <GlassCard>
@@ -198,7 +153,7 @@ const ParentApp = () => {
                       <span>Fermata: {child.stop}</span>
                     </div>
                     <div className="text-sm text-muted-foreground flex items-center gap-2">
-                      <Clock size={14} className="text-primary" />
+                      <Bell size={14} className="text-primary" />
                       <span>Orario ritiro: {child.time}</span>
                     </div>
                   </div>
@@ -236,18 +191,12 @@ const ParentApp = () => {
 
           <Motion className="animate-scale-in order-1 md:order-2 aspect-square md:aspect-auto h-[300px] md:h-auto">
             <MapboxMap>
-              <GlassCard className="animate-slide-up" padding="sm">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Navigation2 size={18} className="text-primary" />
-                    <div>
-                      <p className="font-medium text-sm">{ROUTE_INFO.distance} di distanza</p>
-                      <p className="text-xs text-muted-foreground">Prossima: {ROUTE_INFO.nextStop}</p>
-                    </div>
-                  </div>
-                  <StatusBadge status={timeRemaining > 0 ? "active" : "completed"} size="sm" />
-                </div>
-              </GlassCard>
+              <MapLocationCard
+                distance={ROUTE_INFO.distance}
+                nextStop={ROUTE_INFO.nextStop}
+                status={timeRemaining > 0 ? "active" : "completed"}
+                className="animate-slide-up"
+              />
             </MapboxMap>
           </Motion>
         </div>
