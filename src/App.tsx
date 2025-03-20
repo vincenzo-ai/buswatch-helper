@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "@/components/AnimatePresence";
-import MapboxApiKey from "@/components/MapboxApiKey";
+import OpenStreetMapNotice from "@/components/MapboxApiKey";
 import LandingPage from "./pages/LandingPage";
 import DriverApp from "./pages/DriverApp";
 import ParentApp from "./pages/ParentApp";
@@ -37,7 +37,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <MapboxApiKey />
+      <OpenStreetMapNotice />
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>

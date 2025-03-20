@@ -2,8 +2,8 @@
 import { useState, useEffect, useRef, ReactNode } from 'react';
 import { Motion } from '@/components/AnimatePresence';
 import { cn } from '@/lib/utils';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 interface Coordinates {
   lat: number;
@@ -26,54 +26,58 @@ const MapboxMap = ({
   children,
 }: MapboxMapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const busMarker = useRef<mapboxgl.Marker | null>(null);
-  const destMarker = useRef<mapboxgl.Marker | null>(null);
+  const map = useRef<L.Map | null>(null);
+  const busMarker = useRef<L.Marker | null>(null);
+  const destMarker = useRef<L.Marker | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
   // Inizializza la mappa quando il componente viene montato
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Imposta il token di accesso Mapbox
-    mapboxgl.accessToken = 'pk.eyJ1IjoieW91ci11c2VybmFtZSIsImEiOiJjbGVhcmx5LXRoaXMtaXMtbm90LWEtcmVhbC10b2tlbiIsInNob3VsZC1iZS1jaGFuZ2VkIjoiYnktdGhlLXVzZXIifQ';
-    
-    // Crea una nuova istanza di mappa
-    const newMap = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [(busLocation.lng + destinationLocation.lng) / 2, (busLocation.lat + destinationLocation.lat) / 2],
-      zoom: 12,
-    });
+    // Crea una nuova istanza di mappa Leaflet
+    const newMap = L.map(mapContainer.current).setView(
+      [(busLocation.lat + destinationLocation.lat) / 2, (busLocation.lng + destinationLocation.lng) / 2], 
+      12
+    );
 
-    // Aggiungi controlli di navigazione
-    newMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    // Aggiungi il layer OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(newMap);
 
     // Imposta la mappa quando è caricata
-    newMap.on('load', () => {
-      setMapLoaded(true);
-      map.current = newMap;
+    map.current = newMap;
+    setMapLoaded(true);
 
-      // Aggiungi marker per il bus
-      busMarker.current = new mapboxgl.Marker({
-        color: '#3498db'
+    // Aggiungi marker per il bus
+    busMarker.current = L.marker([busLocation.lat, busLocation.lng], {
+      icon: L.divIcon({
+        className: 'bus-marker',
+        html: `<div class="w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-300"></div>`,
+        iconSize: [16, 16],
+        iconAnchor: [8, 8]
       })
-        .setLngLat([busLocation.lng, busLocation.lat])
-        .addTo(newMap);
+    }).addTo(newMap);
 
-      // Aggiungi marker per la destinazione
-      destMarker.current = new mapboxgl.Marker()
-        .setLngLat([destinationLocation.lng, destinationLocation.lat])
-        .addTo(newMap);
+    // Aggiungi marker per la destinazione
+    destMarker.current = L.marker([destinationLocation.lat, destinationLocation.lng], {
+      icon: L.divIcon({
+        className: 'destination-marker',
+        html: `<div class="w-4 h-4 rounded-full bg-red-500 ring-4 ring-red-300"></div>`,
+        iconSize: [16, 16],
+        iconAnchor: [8, 8]
+      })
+    }).addTo(newMap);
 
-      // Adatta la vista per visualizzare entrambi i marker
-      const bounds = new mapboxgl.LngLatBounds()
-        .extend([busLocation.lng, busLocation.lat])
-        .extend([destinationLocation.lng, destinationLocation.lat]);
-      
-      newMap.fitBounds(bounds, {
-        padding: 50
-      });
+    // Adatta la vista per visualizzare entrambi i marker
+    const bounds = L.latLngBounds(
+      [busLocation.lat, busLocation.lng],
+      [destinationLocation.lat, destinationLocation.lng]
+    );
+    
+    newMap.fitBounds(bounds, {
+      padding: [50, 50]
     });
 
     // Pulizia al momento dello smontaggio
@@ -90,21 +94,22 @@ const MapboxMap = ({
 
     // Aggiorna la posizione del marker del bus
     if (busMarker.current) {
-      busMarker.current.setLngLat([busLocation.lng, busLocation.lat]);
+      busMarker.current.setLatLng([busLocation.lat, busLocation.lng]);
     }
 
     // Aggiorna la posizione del marker della destinazione
     if (destMarker.current) {
-      destMarker.current.setLngLat([destinationLocation.lng, destinationLocation.lat]);
+      destMarker.current.setLatLng([destinationLocation.lat, destinationLocation.lng]);
     }
 
     // Aggiorna i confini della mappa
-    const bounds = new mapboxgl.LngLatBounds()
-      .extend([busLocation.lng, busLocation.lat])
-      .extend([destinationLocation.lng, destinationLocation.lat]);
+    const bounds = L.latLngBounds(
+      [busLocation.lat, busLocation.lng],
+      [destinationLocation.lat, destinationLocation.lng]
+    );
     
     map.current.fitBounds(bounds, {
-      padding: 50
+      padding: [50, 50]
     });
   }, [busLocation, destinationLocation, mapLoaded]);
 
