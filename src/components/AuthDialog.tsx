@@ -14,7 +14,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { User, UserCircle, Mail, Lock, LogIn, UserPlus } from 'lucide-react';
+import { User, UserCircle, Mail, Lock, LogIn, UserPlus, Key } from 'lucide-react';
+import { driverDemoAccount, parentDemoAccount } from '@/lib/demoAccounts';
 
 type UserType = 'driver' | 'parent';
 type AuthMode = 'login' | 'register';
@@ -84,6 +85,20 @@ const AuthDialog = ({
       navigate(redirectPath);
     }
     
+    onOpenChange(false);
+    resetForm();
+  };
+
+  const loginWithDemo = (type: UserType) => {
+    const account = type === 'driver' ? driverDemoAccount : parentDemoAccount;
+    
+    toast({
+      title: "Account demo",
+      description: `Accesso con account ${type === 'driver' ? 'autista' : 'genitore'} demo`
+    });
+    
+    const redirectPath = type === 'driver' ? '/driver' : '/parent';
+    navigate(redirectPath);
     onOpenChange(false);
     resetForm();
   };
@@ -191,6 +206,18 @@ const AuthDialog = ({
                   </>
                 )}
               </Button>
+              
+              {mode === 'login' && (
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  className="w-full mt-2"
+                  onClick={() => loginWithDemo('parent')}
+                >
+                  <Key className="mr-2 h-4 w-4" />
+                  Accedi come Genitore Demo
+                </Button>
+              )}
             </form>
           </TabsContent>
 
@@ -262,6 +289,18 @@ const AuthDialog = ({
                   </>
                 )}
               </Button>
+              
+              {mode === 'login' && (
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  className="w-full mt-2"
+                  onClick={() => loginWithDemo('driver')}
+                >
+                  <Key className="mr-2 h-4 w-4" />
+                  Accedi come Autista Demo
+                </Button>
+              )}
             </form>
           </TabsContent>
         </Tabs>
